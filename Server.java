@@ -1,5 +1,7 @@
 package com.javarush.task.task30.task3008;
 
+import com.javarush.task.task30.task3008.client.Client;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -15,7 +17,8 @@ public class Server {
 
         try (ServerSocket serverSocket = new ServerSocket(port)) {
             ConsoleHelper.writeMessage("Чат сервер запущен.");
-
+            Client client = new Client();
+            client.run();
 
             while (true) {
                 // Ожидаем входящее соединение и запускаем отдельный поток при его принятии

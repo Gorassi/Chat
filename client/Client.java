@@ -5,14 +5,41 @@ import com.javarush.task.task30.task3008.ConsoleHelper;
 import com.javarush.task.task30.task3008.Message;
 import com.javarush.task.task30.task3008.MessageType;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 public class Client {
 
     protected Connection connection;
     private volatile boolean clientConnected = false;
+
+    public static void main(String[] args) {
+         new Client().run();
+    }
+
+    public void run(){
+        Thread thread = getSocketThread();
+        thread.setDaemon(true);
+        thread.start();
+        synchronized (this) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                ConsoleHelper.writeMessage("Waiting is interrupted on Client.line 22");
+                System.exit(-1);
+            }
+        }
+        if(clientConnected){
+            ConsoleHelper.writeMessage("Соединение установлено.\n" +
+                    "Для выхода наберите команду 'exit'.");
+        } else {
+            ConsoleHelper.writeMessage("Произошла ошибка во время работы клиента.");
+        }
+        while(clientConnected){
+            String str = ConsoleHelper.readString();
+            if(shouldSendTextFromConsole()) sendTextMessage(str);
+            if(str.equals("exit")) break;
+        }
+    }
     
     protected String getServerAddress(){
         ConsoleHelper.writeMessage("Enter, please, ip server :");

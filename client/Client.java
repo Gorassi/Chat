@@ -33,7 +33,7 @@ public class Client {
             ConsoleHelper.writeMessage("Соединение установлено.\n" +
                     "Для выхода наберите команду 'exit'.");
         } else {
-            ConsoleHelper.writeMessage("Произошла ошибка во время работы клиента.");
+            ConsoleHelper.writeMessage("Client 36: Произошла ошибка во время работы клиента.");
         }
         while(clientConnected){
             String str = ConsoleHelper.readString();
@@ -53,7 +53,7 @@ public class Client {
     }
     
     protected String getUserName(){
-        ConsoleHelper.writeMessage("Enter, please, ip server :");
+        ConsoleHelper.writeMessage("Enter, please, userName :");
          return ConsoleHelper.readString();
     }
 
@@ -137,7 +137,7 @@ public class Client {
             int port = getServerPort();
             try {
                 Socket socket = new Socket(ip, port);
-                connection = new Connection(socket);
+                Client.this.connection = new Connection(socket);
                 clientHandshake();
                 clientMainLoop();
             } catch (IOException | ClassNotFoundException e) {

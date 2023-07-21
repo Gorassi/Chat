@@ -15,10 +15,11 @@ public class Server {
         ConsoleHelper.writeMessage("Введите порт сервера:");
         int port = ConsoleHelper.readInt();
 
+//        Client client = new Client();
+//        client.run();
+
         try (ServerSocket serverSocket = new ServerSocket(port)) {
             ConsoleHelper.writeMessage("Чат сервер запущен.");
-            Client client = new Client();
-            client.run();
 
             while (true) {
                 // Ожидаем входящее соединение и запускаем отдельный поток при его принятии
@@ -26,7 +27,7 @@ public class Server {
                 new Handler(socket).start();
             }
         } catch (Exception e) {
-            ConsoleHelper.writeMessage("Произошла ошибка при запуске или работе сервера.");
+            ConsoleHelper.writeMessage("Server 32: Произошла ошибка при запуске или работе сервера.");
         }
     }
 
@@ -66,7 +67,6 @@ public class Server {
         private String serverHandshake(Connection connection) throws IOException, ClassNotFoundException {
             while (true) {
                 connection.send(new Message(MessageType.NAME_REQUEST));
-
                 Message message = connection.receive();
                 if (message.getType() != MessageType.USER_NAME) {
                     ConsoleHelper.writeMessage("Получено сообщение от " + socket.getRemoteSocketAddress() + ". Тип сообщения не соответствует протоколу.");
